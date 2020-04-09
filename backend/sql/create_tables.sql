@@ -3,8 +3,9 @@ BEGIN;
 
 DROP TABLE turnips_week;
 DROP TABLE turnips_buy;
-DROP TABLE member;
 DROP TABLE turnips_sell;
+DROP TABLE member;
+
 
 
 --what goes into a user table?
