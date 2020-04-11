@@ -1,6 +1,10 @@
+--initial script run--
+--run only once, and only run when creating the tables needed for the database--
+
 
 BEGIN;
 
+--drops all tables being created to make sure there are no conflicts--
 DROP TABLE turnips_week;
 DROP TABLE turnips_buy;
 DROP TABLE turnips_sell;
@@ -22,6 +26,7 @@ CREATE TABLE member (
 );
 
 --all data for the week in a single table?
+--would be nice to collect info on this to do modeling if possible
 CREATE TABLE turnips_week (
     id INTEGER PRIMARY KEY,
     member_id INTEGER,
