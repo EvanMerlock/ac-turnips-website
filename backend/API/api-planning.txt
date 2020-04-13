@@ -1,0 +1,96 @@
+
+AMAZON DYNAMODB 4 NOSQL FOR CURRENT ONLINE STATUS?
+
+LAST ACTIVE MORE THAN 10 MINUTES SHOW AS OFFLINE?
+
+CLIENT -> API -> LAMBDA -> KEEPACTIVE LAMBDA [CHECK TIMESTAMP (READ) THEN UPDATE TIMESTAMP IF STORED TIMESTAMP IS MORE THAN 5 MINUTES]
+
+
+
+/users
+get
+
+/users/{ID}
+get
+
+response:
+friend-code
+discord-name
+online
+
+
+/users/set-online
+put
+
+header params:
+online [bool]
+
+
+/dodo-code
+
+
+
+
+
+
+/turnips?filter=x&page=x&sort=x
+get
+
+querystring params:
+
+filter
+page/pagination
+sort
+
+description: reporting/browsing
+
+
+-----
+/turnips/{thing?}
+get
+
+-----
+-----
+/turnips/sell
+post
+delete
+put
+
+header params:
+day
+am/pm
+price
+CURRENT WEEK?
+
+
+PUT ADDITIONAL PARAMS:
+turnip GUID
+
+DELETE
+one param: turnip GUID (NO ADDITIONAL DELETE ENTIRE ROW)
+
+
+-----
+
+-----
+/turnips/buy
+post
+delete
+put
+
+header params:
+price
+CURRENT WEEK?
+
+PUT ADDITIONAL PARAMS:
+turnip GUID
+
+DELETE
+one param: turnip GUID (NO ADDITIONAL DELETE ENTIRE ROW)
+-----
+
+/search
+GET
+
+???
+
