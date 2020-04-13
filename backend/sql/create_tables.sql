@@ -8,6 +8,7 @@ BEGIN;
 DROP TABLE turnips_week;
 DROP TABLE turnips_buy;
 DROP TABLE turnips_sell;
+DROP TABLE dodo_code;
 DROP TABLE member;
 
 
@@ -16,13 +17,21 @@ DROP TABLE member;
 CREATE TABLE member (
 	id INTEGER PRIMARY KEY,
 	--thinking about using aws cognito to handle users and authentication to the API
-	cognito_id VARCHAR(50),
+	--GUID from IDP?
+	token_guid VARCHAR(50),
 	--connect with people with discord?--
 	discord_name VARCHAR(50),
 	online BOOLEAN,
 	time_zone VARCHAR(3),
 	dodo_code VARCHAR(5)
 
+);
+
+
+CREATE TABLE dodo_code (
+    member_id VARCHAR(50),
+    dodo_code VARCHAR(5),
+    FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
 --all data for the week in a single table?
