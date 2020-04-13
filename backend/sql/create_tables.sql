@@ -18,17 +18,17 @@ CREATE TABLE member (
 	id INTEGER PRIMARY KEY,
 	--thinking about using aws cognito to handle users and authentication to the API
 	--GUID from IDP?
-	token_guid VARCHAR(50),
+	token_guid TEXT,
 	--connect with people with discord?--
-	discord_name VARCHAR(50),
+	discord_name TEXT,
 	online BOOLEAN,
-	time_zone VARCHAR(3)
+	time_zone TEXT
 );
 
 
 CREATE TABLE dodo_code (
-    member_id VARCHAR(50),
-    dodo_code VARCHAR(5),
+    member_id TEXT,
+    dodo_code TEXT,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
@@ -61,10 +61,11 @@ CREATE TABLE turnips_sell (
     price INTEGER,
     posted TIMESTAMP,
     --if posted in morning, expires at noon, likewise if posted at night, expires at 10PM local time
-    --does timestamp store time zone related info?
+    --STORE AS UTC
     --timezone stored with user
+
     expire TIMESTAMP,
-    dodo_code VARCHAR(5),
+    dodo_code TEXT,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
@@ -74,6 +75,7 @@ CREATE TABLE turnips_buy (
     member_id INTEGER,
     sunday_date DATE,
     price INTEGER,
+    dodo_code TEXT,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
