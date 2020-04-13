@@ -22,9 +22,7 @@ CREATE TABLE member (
 	--connect with people with discord?--
 	discord_name VARCHAR(50),
 	online BOOLEAN,
-	time_zone VARCHAR(3),
-	dodo_code VARCHAR(5)
-
+	time_zone VARCHAR(3)
 );
 
 
