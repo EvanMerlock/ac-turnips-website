@@ -5,38 +5,41 @@
 BEGIN;
 
 --drops all tables being created to make sure there are no conflicts--
-DROP TABLE turnips_week;
-DROP TABLE turnips_buy;
-DROP TABLE turnips_sell;
-DROP TABLE dodo_code;
-DROP TABLE member;
+DROP SCHEMA turnips CASCADE;
 
-
+CREATE SCHEMA turnips;
 
 --what goes into a user table?
-CREATE TABLE member (
-	id INTEGER PRIMARY KEY,
+CREATE TABLE turnips.member (
+	id UUID PRIMARY KEY,
 	--thinking about using aws cognito to handle users and authentication to the API
 	--GUID from IDP?
 	token_guid TEXT,
 	--connect with people with discord?--
 	discord_name TEXT,
 	online BOOLEAN,
-	time_zone TEXT
+	time_zone TEXT,
+	friend_code TEXT
+
+);
+
+CREATE TABLE turnips.member_settings (
+    member_id UUID PRIMARY KEY,
+    set_friend_code_private BOOLEAN,
+    FOREIGN KEY (member_id) REFERENCES turnips.member (id)
+
 );
 
 
-CREATE TABLE dodo_code (
-    member_id TEXT,
-    dodo_code TEXT,
-    FOREIGN KEY (member_id) REFERENCES member (id)
+CREATE TABLE turnips.dodo_code (
+    dodo_code_id UUID PRIMARY KEY,
+    dodo_code TEXT
 );
 
 --all data for the week in a single table?
 --would be nice to collect info on this to do modeling if possible
-CREATE TABLE turnips_week (
-    id INTEGER PRIMARY KEY,
-    member_id INTEGER,
+CREATE TABLE turnips.turnips_week (
+    member_id UUID PRIMARY KEY,
     week_start DATE,
     monday_morning INTEGER,
     monday_evening INTEGER,
@@ -50,33 +53,34 @@ CREATE TABLE turnips_week (
     friday_evening INTEGER,
     saturday_morning INTEGER,
     saturday_evening INTEGER,
-    FOREIGN KEY (member_id) REFERENCES member (id)
+    FOREIGN KEY (member_id) REFERENCES turnips.member (id)
 
 );
 
 --specific turnip sell entry with timestamp
-CREATE TABLE turnips_sell (
-    id INTEGER PRIMARY KEY,
-    member_id INTEGER,
+CREATE TABLE turnips.turnips_sell (
+    member_id UUID PRIMARY KEY,
     price INTEGER,
     posted TIMESTAMP,
     --if posted in morning, expires at noon, likewise if posted at night, expires at 10PM local time
     --STORE AS UTC
     --timezone stored with user
-
     expire TIMESTAMP,
-    dodo_code TEXT,
-    FOREIGN KEY (member_id) REFERENCES member (id)
+    dodo_code UUID,
+    FOREIGN KEY (dodo_code) REFERENCES turnips.dodo_code(dodo_code_id),
+    FOREIGN KEY (member_id) REFERENCES turnips.member (id)
 );
 
 --thought it might be good to allow option to input buy price, maybe for personal tracking?
-CREATE TABLE turnips_buy (
-    id INTEGER PRIMARY KEY,
-    member_id INTEGER,
+CREATE TABLE turnips.turnips_buy (
+    member_id UUID PRIMARY KEY,
     sunday_date DATE,
+    -- NOON ON SUNDAY EXPIRE (BE AWARE OF TIME ZONE)
+    expire TIMESTAMP,
     price INTEGER,
-    dodo_code TEXT,
-    FOREIGN KEY (member_id) REFERENCES member (id)
+    dodo_code UUID,
+    FOREIGN KEY (dodo_code) REFERENCES turnips.dodo_code(dodo_code_id),
+    FOREIGN KEY (member_id) REFERENCES turnips.member (id)
 );
 
 
